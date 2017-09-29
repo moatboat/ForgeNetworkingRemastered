@@ -109,11 +109,11 @@ namespace BeardedManStudios.Forge.Networking
 		public object MapBasicType(Type type, BMSByte stream)
 		{
 			if (type == typeof(sbyte))
-				return (sbyte)stream.GetBasicType<sbyte>();
+				return unchecked((sbyte)stream.GetBasicType<byte>());
 			else if (type == typeof(byte))
-				return (byte)stream.GetBasicType<byte>();
+				return stream.GetBasicType<byte>();
 			else if (type == typeof(char))
-				return (byte)stream.GetBasicType<char>();
+				return unchecked((char)stream.GetBasicType<byte>());
 			else if (type == typeof(short))
 				return stream.GetBasicType<short>();
 			else if (type == typeof(ushort))
@@ -346,6 +346,18 @@ namespace BeardedManStudios.Forge.Networking
 				// TODO:  Make this a more appropriate exception
 				throw new BaseNetworkException("The type " + type.ToString() + " is not allowed to be sent over the Network (yet)");
 			}
+		}
+
+		
+		/// <summary>
+		/// Creates a BMSByte using ObjectMapper
+		/// </summary>
+		/// <param name="argsToMap">Objects to be mapped</param>
+		public static BMSByte BMSByte(params object[] argsToMap)
+		{
+			BMSByte data = new BMSByte();
+			Instance.MapBytes(data, argsToMap);
+			return data;
 		}
 	}
 }
